@@ -5,10 +5,19 @@ lua-resty-jwt - [JWT](http://self-issued.info/docs/draft-jones-json-web-token-01
 
 [![Build Status](https://img.shields.io/travis/SkyLothar/lua-resty-jwt.svg?style=flat-square)](https://travis-ci.org/SkyLothar/lua-resty-jwt)
 
+
+**Attention :exclamation: the hmac lib used here is [lua-resty-hmac](https://github.com/jkeys089/lua-resty-hmac), not the one in luarocks.**
+
+Installation
+============
+- opm: `opm get SkyLothar/lua-resty-jwt`
+- luarocks: `luarocks install lua-resty-jwt`
+- Head to [release page](https://github.com/SkyLothar/lua-resty-jwt/releases) and download `tar.gz`
+
 version
 =======
 
-0.1.5
+0.1.10
 
 
 Table of Contents
@@ -35,7 +44,7 @@ Table of Contents
 Status
 ======
 
-This library is still under active development and is considered production ready.
+This library is under active development but is considered production ready.
 
 Description
 ===========
@@ -164,22 +173,17 @@ sign-jwe
 
 sign a table_of_jwt to a jwt_token.
 
-The `alg` argument specifies which hashing algorithm to use for encrypting key (`DIR`).
-The `enc` argument specifies which hashing algorithm to use for encrypting payload (`A128CBC_HS256`, `A256CBC_HS512`)
+The `alg` argument specifies which hashing algorithm to use for encrypting key (`dir`).
+The `enc` argument specifies which hashing algorithm to use for encrypting payload (`A128CBC-HS256`, `A256CBC-HS512`)
 
 ### sample of table_of_jwt ###
 ```
 {
-    "header": {"typ": "JWE", "alg": "DIR", "enc":"A128CBC_HS256"},
+    "header": {"typ": "JWE", "alg": "dir", "enc":"A128CBC-HS256"},
     "payload": {"foo": "bar"}
 }
 ```
 
-verify
-------
-`syntax: local jwt_obj = jwt:verify(key, jwt_token [, claim_spec [, ...]])`
-
-verify a jwt_token and returns a jwt_obj table
 [Back to TOC](#table-of-contents)
 
 
@@ -258,6 +262,9 @@ Returns a validator that checks if a value exactly equals any of the given `chec
 #### `validators.matches_any_of(patterns)` (opt) ####
 Returns a validator that checks if a value matches any of the given `patterns`.
 
+#### `validators.contains_any_of(check_values,name)` (opt) ####
+Returns a validator that checks if a value of expected type `string` exists in any of the given `check_values`.  The value of `check_values`must be a non-empty table with all the same types.  The optional name is used for error messages and defaults to `check_values`.
+
 #### `validators.greater_than(check_val)` (opt) ####
 Returns a validator that checks how a value compares (numerically, using `>`) to a given `check_value`.  The value of `check_val` cannot be `nil` and must be a number.
 
@@ -319,7 +326,7 @@ When using legacy `validation_options`, you *MUST ONLY* specify these options.  
     * When none of the `nbf` and `exp` claims can be found, verification will fail.
 
     * `nbf` and `exp` claims are expected to be expressed in the jwt as numerical values. Wouldn't that be the case, verification will fail.
-    
+
     * Specifying this option is equivalent to calling:
       ```
       validators.set_system_leeway(leeway)
@@ -337,7 +344,7 @@ When using legacy `validation_options`, you *MUST ONLY* specify these options.  
 * `require_nbf_claim`: Express if the `nbf` claim is optional or not. Value should be a boolean.
 
     * When this validation option is set to `true` and no `lifetime_grace_period` has been specified, a zero (`0`) leeway is implied.
-    
+
     * Specifying this option is equivalent to specifying as a `claim_spec`:
       ```
       {
@@ -394,6 +401,11 @@ Examples
 Installation
 ============
 
+Using Luarocks
+```bash
+luarocks install lua-resty-jwt
+```
+
 It is recommended to use the latest [ngx_openresty bundle](http://openresty.org) directly.
 
 Also, You need to configure
@@ -421,7 +433,7 @@ Testing With Docker
 ===================
 
 ```
-docker-compose up
+./ci script
 ```
 
 [Back to TOC](#table-of-contents)
