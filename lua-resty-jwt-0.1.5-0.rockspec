@@ -1,16 +1,16 @@
 -- This file was automatically generated for the LuaDist project.
 
 package = 'lua-resty-jwt'
-version = '0.1.4-0'
+version = '0.1.5-0'
 -- LuaDist source
 source = {
-  tag = "0.1.4-0",
+  tag = "0.1.5-0",
   url = "git://github.com/LuaDist-testing/lua-resty-jwt.git"
 }
 -- Original source
 -- source = {
 --   url = 'git://github.com/SkyLothar/lua-resty-jwt',
---   tag = 'v0.1.4'
+--   tag = 'v0.1.5'
 -- }
 description = {
   summary = 'JWT for ngx_lua and LuaJIT.',
